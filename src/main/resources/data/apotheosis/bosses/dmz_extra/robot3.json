@@ -1,0 +1,108 @@
+{
+  "entity": "dragonminez:robot3",
+  "weight": 5,
+  "quality": 2,
+  "size": {
+    "width": 0.9,
+    "height": 2.2
+  },
+  "valid_gear_sets": [
+    "#overworld"
+  ],
+  "dimensions": [
+    "minecraft:overworld"
+  ],
+  "min_rarity": "uncommon",
+  "max_rarity": "rare",
+  "stats": {
+    "uncommon": {
+      "enchant_chance": 0.35,
+      "enchantment_levels": [
+        15,
+        10,
+        24,
+        18
+      ],
+      "effects": [
+        {
+          "effect": "minecraft:fire_resistance",
+          "chance": 1.0
+        }
+      ],
+      "attribute_modifiers": [
+        {
+          "attribute": "minecraft:generic.max_health",
+          "operation": "MULTIPLY_BASE",
+          "value": 0.55
+        },
+        {
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "MULTIPLY_BASE",
+          "value": 0.3
+        },
+        {
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "MULTIPLY_BASE",
+          "value": 0.06
+        },
+        {
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "ADDITION",
+          "value": 0.55
+        },
+        {
+          "attribute": "minecraft:generic.armor",
+          "operation": "ADDITION",
+          "value": 7
+        }
+      ]
+    },
+    "rare": {
+      "enchant_chance": 0.5,
+      "enchantment_levels": [
+        19,
+        13,
+        27,
+        22
+      ],
+      "effects": [
+        {
+          "effect": "minecraft:fire_resistance",
+          "chance": 1.0
+        }
+      ],
+      "attribute_modifiers": [
+        {
+          "attribute": "minecraft:generic.max_health",
+          "operation": "MULTIPLY_BASE",
+          "value": 0.9
+        },
+        {
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "MULTIPLY_BASE",
+          "value": 0.45
+        },
+        {
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "MULTIPLY_BASE",
+          "value": 0.09
+        },
+        {
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "ADDITION",
+          "value": 0.65
+        },
+        {
+          "attribute": "minecraft:generic.armor",
+          "operation": "ADDITION",
+          "value": 10
+        },
+        {
+          "attribute": "minecraft:generic.armor_toughness",
+          "operation": "ADDITION",
+          "value": 4
+        }
+      ]
+    }
+  }
+}

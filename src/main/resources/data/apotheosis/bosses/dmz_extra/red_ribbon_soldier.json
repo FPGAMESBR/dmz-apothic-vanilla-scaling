@@ -1,0 +1,65 @@
+{
+  "entity": "dragonminez:red_ribbon_soldier",
+  "weight": 9,
+  "quality": 0,
+  "size": {
+    "width": 0.6,
+    "height": 1.9
+  },
+  "valid_gear_sets": [
+    "#overworld"
+  ],
+  "dimensions": [
+    "minecraft:overworld"
+  ],
+  "min_rarity": "uncommon",
+  "max_rarity": "uncommon",
+  "stats": {
+    "uncommon": {
+      "enchant_chance": 0.25,
+      "enchantment_levels": [
+        12,
+        8,
+        20,
+        14
+      ],
+      "effects": [
+        {
+          "effect": "minecraft:fire_resistance",
+          "chance": 1.0
+        }
+      ],
+      "attribute_modifiers": [
+        {
+          "attribute": "minecraft:generic.max_health",
+          "operation": "ADDITION",
+          "value": {
+            "min": 55,
+            "steps": 25,
+            "step": 2
+          }
+        },
+        {
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "MULTIPLY_BASE",
+          "value": 0.3
+        },
+        {
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "MULTIPLY_BASE",
+          "value": 0.08
+        },
+        {
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "ADDITION",
+          "value": 0.3
+        },
+        {
+          "attribute": "minecraft:generic.armor",
+          "operation": "ADDITION",
+          "value": 4
+        }
+      ]
+    }
+  }
+}
