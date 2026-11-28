@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.dmzscaling.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "com.dmzscaling.mixin.DmzScalingMixinPlugin",
   "mixins": [
     "BossRegistryMixin",
     "BossEventsMixin"

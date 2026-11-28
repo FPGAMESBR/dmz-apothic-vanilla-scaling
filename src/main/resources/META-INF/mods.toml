@@ -4,10 +4,10 @@ license="MIT"
 
 [[mods]]
 modId="dmzscaling"
-version="1.0.0"
+version="1.1.0"
 displayName="DMZ Apothic & Vanilla Scaling"
 authors="FPGAMESBR"
-description='''Limits Apotheosis Overworld/Nether/End invaders to Dragon Mine Z enemies (keeping Apothic DMZ's 23 Saga bosses, adding 10 DMZ Overworld enemies, and optionally preserving Twilight Forest bosses), and adds hybrid Dragon Mine Z BASE-power scaling for vanilla hostile mobs, mini-bosses (Warden, Elder Guardian), and main bosses (Ender Dragon, Wither).'''
+description='''Configurable Apotheosis Dragon Mine Z boss/miniboss filter (with 26 bundled DMZ invaders across Overworld, Namek, Nether, Demon Realm, The End, and Otherworld, empty-dimension protection, and optional standalone mode without Apotheosis) plus 2-stage DMZ Defense-aware BASE-power scaling for vanilla & modded mobs, mini-bosses (Warden, Elder Guardian), and main bosses (Ender Dragon, Wither) with party co-op scaling, scaled End Crystal/Wither regeneration, DoT protection, and /dmzscaling commands.'''
 
 [[dependencies.dmzscaling]]
     modId="forge"
@@ -32,7 +32,7 @@ description='''Limits Apotheosis Overworld/Nether/End invaders to Dragon Mine Z 
 
 [[dependencies.dmzscaling]]
     modId="apotheosis"
-    mandatory=true
+    mandatory=false
     versionRange="[7.0.0,)"
     ordering="AFTER"
     side="BOTH"

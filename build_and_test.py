@@ -7,6 +7,7 @@ import zipfile
 
 PROJ = os.path.dirname(os.path.abspath(__file__))
 CNW = 0x08000000 if os.name == "nt" else 0
+MOD_VERSION = "1.1.0"
 
 
 def resolve_jdk_tool(name: str) -> str:
@@ -59,14 +60,25 @@ JAR_PLACEBO = find_mod_jar(MODS_DIR, "Placebo-*.jar", "PLACEBO_JAR")
 JAR_DMZ = find_mod_jar(MODS_DIR, "dragonminez-*.jar", "DRAGONMINEZ_JAR")
 
 
-def make_boss_json(entity, weight, quality, width, height, min_rar, max_rar, stats_dict):
+def make_boss_json(
+    entity,
+    weight,
+    quality,
+    width,
+    height,
+    min_rar,
+    max_rar,
+    stats_dict,
+    dimensions=None,
+    gear_sets=None,
+):
     return {
         "entity": entity,
         "weight": weight,
         "quality": quality,
         "size": {"width": width, "height": height},
-        "valid_gear_sets": ["#overworld"],
-        "dimensions": ["minecraft:overworld"],
+        "valid_gear_sets": gear_sets if gear_sets is not None else ["#overworld"],
+        "dimensions": dimensions if dimensions is not None else ["minecraft:overworld"],
         "min_rarity": min_rar,
         "max_rarity": max_rar,
         "stats": stats_dict,
@@ -94,6 +106,7 @@ def generate_extra_dmz_boss_jsons():
     out_dir = os.path.join(PROJ, "src", "main", "resources", "data", "apotheosis", "bosses", "dmz_extra")
     os.makedirs(out_dir, exist_ok=True)
     bosses = {
+        # --- 10 Overworld Extra DMZ Bosses ---
         "bandit.json": make_boss_json(
             "dragonminez:bandit", 9, 0, 0.6, 1.9, "uncommon", "uncommon",
             {"uncommon": stat_block(0.25, [12, 8, 20, 14], [
@@ -195,10 +208,79 @@ def generate_extra_dmz_boss_jsons():
             ])},
         )
 
+    # --- 8 Namek Extra DMZ Bosses (Frieza Force & Ginyu Force in dragonminez:namek) ---
+    for fn_key, ent, w, rar, hp_m, dmg_m, arm in [
+        ("namek_friezasoldier01", "saga_friezasoldier01", 8, "rare", 0.25, 0.20, 5),
+        ("namek_cui", "saga_cui", 6, "rare", 0.30, 0.22, 6),
+        ("namek_dodoria", "saga_dodoria", 5, "rare", 0.35, 0.25, 7),
+        ("namek_zarbon", "saga_zarbon", 5, "rare", 0.35, 0.25, 7),
+        ("namek_zarbont1", "saga_zarbont1", 4, "rare", 0.45, 0.30, 8),
+        ("namek_recoome", "saga_recoome", 4, "rare", 0.50, 0.32, 9),
+        ("namek_burter", "saga_burter", 4, "rare", 0.45, 0.30, 8),
+        ("namek_jeice", "saga_jeice", 4, "rare", 0.45, 0.30, 8),
+    ]:
+        bosses[f"{fn_key}.json"] = make_boss_json(
+            f"dragonminez:{ent}", w, 2, 0.7, 2.0, rar, rar,
+            {rar: stat_block(0.45, [18, 12, 26, 20], [
+                mod_mul("minecraft:generic.max_health", hp_m),
+                mod_mul("minecraft:generic.attack_damage", dmg_m),
+                mod_mul("dragonminez:ki_blast_damage", dmg_m),
+                mod_mul("minecraft:generic.movement_speed", 0.08),
+                mod_add("minecraft:generic.knockback_resistance", 0.45),
+                mod_add("minecraft:generic.armor", arm),
+            ])},
+            dimensions=["dragonminez:namek"],
+            gear_sets=["#overworld"],
+        )
+
+    # --- 4 Nether & Demon Realm Extra DMZ Bosses (Androids / Cell Jr / Dabura) ---
+    for fn_key, ent, w, hp_m, dmg_m, arm in [
+        ("nether_drgero", "saga_drgero", 5, 0.40, 0.28, 8),
+        ("nether_a19", "saga_a19", 5, 0.40, 0.28, 8),
+        ("nether_cell_jr", "saga_cell_jr", 4, 0.50, 0.35, 10),
+        ("nether_dabura", "saga_dabura", 3, 0.60, 0.40, 12),
+    ]:
+        bosses[f"{fn_key}.json"] = make_boss_json(
+            f"dragonminez:{ent}", w, 2, 0.7, 2.0, "epic", "epic",
+            {"epic": stat_block(0.60, [22, 15, 32, 25], [
+                mod_mul("minecraft:generic.max_health", hp_m),
+                mod_mul("minecraft:generic.attack_damage", dmg_m),
+                mod_mul("dragonminez:ki_blast_damage", dmg_m),
+                mod_mul("minecraft:generic.movement_speed", 0.10),
+                mod_add("minecraft:generic.knockback_resistance", 0.55),
+                mod_add("minecraft:generic.armor", arm),
+                mod_add("minecraft:generic.armor_toughness", 4),
+            ])},
+            dimensions=["minecraft:the_nether", "dragonminez:demon_realm"],
+            gear_sets=["#the_nether"],
+        )
+
+    # --- 4 The End & Otherworld Extra DMZ Bosses (Movie / Z Bosses) ---
+    for fn_key, ent, w, rar, w_box, h_box, hp_m, dmg_m, arm in [
+        ("end_cooler", "saga_cooler", 4, "mythic", 0.8, 2.1, 0.55, 0.38, 12),
+        ("end_cooler_5ta", "saga_cooler_5ta", 3, "mythic", 0.9, 2.3, 0.70, 0.45, 14),
+        ("end_bojack_fp", "saga_bojack_fp", 3, "mythic", 0.9, 2.2, 0.65, 0.42, 13),
+        ("end_hirudegarn", "saga_hirudegarn", 2, "ancient", 1.4, 3.2, 0.85, 0.50, 16),
+    ]:
+        bosses[f"{fn_key}.json"] = make_boss_json(
+            f"dragonminez:{ent}", w, 3, w_box, h_box, rar, rar,
+            {rar: stat_block(0.75, [28, 20, 40, 32], [
+                mod_mul("minecraft:generic.max_health", hp_m),
+                mod_mul("minecraft:generic.attack_damage", dmg_m),
+                mod_mul("dragonminez:ki_blast_damage", dmg_m),
+                mod_mul("minecraft:generic.movement_speed", 0.10),
+                mod_add("minecraft:generic.knockback_resistance", 0.70),
+                mod_add("minecraft:generic.armor", arm),
+                mod_add("minecraft:generic.armor_toughness", 6),
+            ])},
+            dimensions=["minecraft:the_end", "dragonminez:otherworld"],
+            gear_sets=["#the_end"],
+        )
+
     for fn, data in bosses.items():
         with open(os.path.join(out_dir, fn), "w", encoding="utf-8", newline="\n") as f:
             json.dump(data, f, indent=2)
-    print(f"[0/4] Verified {len(bosses)} extra DMZ Overworld boss JSONs in data/apotheosis/bosses/dmz_extra/.")
+    print(f"[0/4] Generated {len(bosses)} bundled DMZ boss JSONs in data/apotheosis/bosses/dmz_extra/.")
     return bosses
 
 
@@ -271,14 +353,14 @@ def compile_main(cp):
 def package_jar(classes_dir):
     libs_dir = os.path.join(PROJ, "build", "libs")
     os.makedirs(libs_dir, exist_ok=True)
-    jar_path = os.path.join(libs_dir, "dmz_apothic_vanilla_scaling-1.0.0.jar")
+    jar_path = os.path.join(libs_dir, f"dmz_apothic_vanilla_scaling-{MOD_VERSION}.jar")
     manifest = (
         "Manifest-Version: 1.0\r\n"
         "Specification-Title: dmzscaling\r\n"
         "Specification-Vendor: FPGAMESBR\r\n"
         "Specification-Version: 1\r\n"
         "Implementation-Title: DMZ Apothic & Vanilla Scaling\r\n"
-        "Implementation-Version: 1.0.0\r\n"
+        f"Implementation-Version: {MOD_VERSION}\r\n"
         "Implementation-Vendor: FPGAMESBR\r\n"
         "MixinConfigs: dmzscaling.mixins.json\r\n"
         "Created-By: 17 (Oracle Corporation)\r\n"
@@ -316,8 +398,8 @@ def verify_mixins_and_jsons(jar_path, bosses):
         capture_output=True, text=True, creationflags=CNW,
     )
     assert "minibosses(net.minecraftforge.event.entity.living.MobSpawnEvent$FinalizeSpawn);" in r_be.stdout
-    assert "(Lnet/minecraftforge/event/entity/living/MobSpawnEvent$FinalizeSpawn;)V" in r_be.stdout
-    print("      Verified BossEvents.minibosses descriptor!")
+    assert "delayedMinibosses(net.minecraftforge.event.entity.EntityJoinLevelEvent);" in r_be.stdout
+    print("      Verified BossEvents.minibosses & BossEvents.delayedMinibosses descriptors!")
 
     r_me = subprocess.run(
         [JAVAP, "-c", "-p", "-cp", JAR_DMZ, "com.dragonminez.common.init.MainEntities"],
@@ -325,6 +407,10 @@ def verify_mixins_and_jsons(jar_path, bosses):
     )
     with zipfile.ZipFile(jar_path) as zf:
         names = set(zf.namelist())
+        assert "com/dmzscaling/mixin/DmzScalingMixinPlugin.class" in names
+        assert "com/dmzscaling/mixin/BossRegistryMixin.class" in names
+        assert "com/dmzscaling/mixin/BossEventsMixin.class" in names
+        assert "com/dmzscaling/DmzScalingCommands.class" in names
         for fn in bosses:
             arc = f"data/apotheosis/bosses/dmz_extra/{fn}"
             assert arc in names, f"Missing {arc} in JAR!"
